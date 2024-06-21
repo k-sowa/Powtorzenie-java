@@ -249,6 +249,56 @@ public class Main {
    - Klasa `Main` używa modułu do odczytywania danych i wyświetlania informacji o wydarzeniach i ich godzinach.
 
 ## Rozwiązanie kolokwium powtórzeniowego
+### Polecenie Napisz program wyświetlający okno, w którym, na podstawie danych przesyłanych sieciowo, rysowane są odcinki. Program powinien stanowić pojedynczy projekt i charakteryzować się następującymi cechami:
+
+0. Przejrzyj pliki csv (tm00,tm01), znajdują się tam zapisane sygnały EEG.
+Sygnał EEG to zapis aktywności elektrycznej mózgu, który jest uzyskiwany za pomocą elektrod umieszczonych na powierzchni skóry głowy.
+
+W pojedynczym wierszu znajduje się 100 pomiarów amplitud(mikrovolty) z jednej elektrody(co 2ms) .
+
+
+1. Utwórz dwa projekty, pierwszy, w którym będą znajdować się trzy paczki:
+
+server,client,databasecreator. W paczce databasecreator umieść plik Creator.
+
+Creator tworzy bazę danych sqlite z tabelką.
+
+Następnie utwórz drugi projekt – z aplikacją Springboot.
+
+
+2. W projekcie pierwszym napisz aplikację kliencką, która będzie
+
+wczytywać ze standardowego wejścia nazwę użytkownika oraz ścieżkę do pliku csv.
+
+Następnie wyśle na serwer informację o nazwie użytkownika, oraz zawartość pliku csv (w przykładzie są to tm00.csv i tm01.csv ) linia po linii. Po każdej wysłanej linii mają nastąpić 2 sekundy przerwy.
+
+Zakładamy, że podawane są unikatowe nazwy użytkowników.
+
+Po zakończeniu aplikacja wyśle wiadomość informującą serwer o zakończeniu przesyłania(np. bye).
+
+Wysyłanie wszystkich tych informacji odseparuj w oddzielnej funkcji: public void sendData(String name, String filepath)
+
+
+3. W projekcie pierwszym napisz aplikacje serwerową, która obsługuje wielu klientów.
+
+Dla pojedynczego klienta serwer pobiera informację o nazwie usera, dla każdej otrzymanej linii tworzy wykres i zapisuje go w formacie base64, oraz dodaje wiersz do bazy sqlite z nazwą użytkownika, numerem elektrody/linii i wykresem w base64.
+
+Pamiętaj o utworzeniu bazy danych za pomocą klasy Creator.
+
+
+4. Napisz sparametryzowany test klienckiej metody sendData, który po wysłaniu danych sprawdzi czy otrzymaliśmy oczekiwany obrazek.
+
+Przykład parametrów w pliku test.csv. Wykresy użyte do testu są typu png o rozmiarze 200x100, tło ma kolor biały, punkty mają kolor czerwony i są rysowane od połowy wysokości (odjęcie wartości pomiaru od połowy wysokości).
+
+
+
+Do ich narysowania użyto BufferedImage image oraz Graphics2d. Punkty są prostokątami o wymiarach 1x1.
+
+Przykładowe pliki wczytane w teście to (test02.csv i test01.csv).
+
+
+5. W drugim projekcie w aplikacji webowej napisz kontroler, który po podaniu w urlu nazwy użytkownika oraz numeru elektrody wyszuka odpowiedni wiersz w bazie i zwróci stronę z nazwą użytkownika, numerem elektrody oraz obrazkiem.
+
 
 ### 1. Utworzenie projektów i struktury paczek
 
@@ -580,7 +630,29 @@ public class EEGController {
 ## Opis Projektu
 
 Ten projekt implementuje program w Java, który uruchamia serwer nasłuchujący na wybranym porcie oraz wyświetla okno do rysowania grafiki 2D przy użyciu JavaFX. Program pozwala na podłączenie wielu klientów, z których każdy może wysłać wiadomość dotyczącą koloru lub współrzędnych odcinka do narysowania.
+1. Należy jednocześnie uruchomić serwer nasłuchujący na wybranym porcie oraz wyświetlić okno służące do rysowania grafiki 2D (np. javafx.scene.canvas.Canvas).
 
+2. Okno powinno mieć rozmiar 500x500 pikseli i być wypełnione białym kolorem.
+
+3. Program powinien pozwolić na podłączenie dowolnej liczby klientów.
+
+4. Każdy z klientów może wysłać dwa rodzaje wiadomości:
+
+5. pojedynczą, sześciocyfrową liczbę szesnastkową oznaczającą kolor (https://en.wikipedia.org/wiki/Web_colors),
+
+6. cztery liczby zmiennoprzecinkowe oddzielone spacjami, oznaczające współrzędne x, y dwóch punktów ograniczających odcinek.
+
+7. Zakładamy poprawność wysyłanych wiadomości.
+
+8. Serwer nie wysyła wiadomości zwrotnej klientom.
+
+9.Program po otrzymaniu od klienta wiadomości zawierającej odcinek powinien narysować go w oknie. Raz dodany odcinek pozostaje do końca działania programu.
+
+10. Odcinki rysowane są w układzie współrzędnych o osi odciętych rosnących w prawo i osi rzędnych rosnących w dół. Początkowo środek układu współrzędnych znajduje się w pikselu (0, 0).
+
+11. Program, po otrzymaniu od klienta wiadomości zawierającej kolor, od momentu jej otrzymania, będzie rysował kolejne odcinki pochodzące od tego klienta z użyciem wybranego koloru. Narysowane wcześniej odcinki nie zmieniają koloru. Jeżeli odcinek pojawi się przed wyborem koloru, należy narysować go na czarno.
+
+12. Okno powinno obsługiwać przyciśnięcie strzałek klawiatury. Strzałka w każdą ze stron powinna przesuwać układ współrzędnych o 10 pikseli zgodnie z wektorem strzałki. Skutkuje to odwrotnym przesunięciem wszystkich odcinków. Aktualne współrzędne wektora przesunięcia powinny być widoczne w oknie programu (w dowolny sposób, np. tekst rysowany na kanwie, etykieta (label), tytuł okna itp.)
 
 ## Krok 3: Implementacja Serwera
 
