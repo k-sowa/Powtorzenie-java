@@ -1,8 +1,8 @@
-## Poradnik: Odczytywanie danych z pliku CSV za pomocą Apache Commons CSV
+## Odczytywanie danych z pliku CSV za pomocą Apache Commons CSV
 
 ### Krok 1: Dodanie zależności
 
-Jeśli używasz Maven, dodaj następującą zależność do pliku `pom.xml`:
+Dodaj następującą zależność do pliku `pom.xml`:
 
 ```xml
 <dependency>
@@ -120,13 +120,8 @@ public class CsvReader {
 4. **Wyświetlanie informacji**:
    - Metoda `main` odczytuje wydarzenia z pliku CSV i wyświetla je na konsoli.
 
-### Podsumowanie
 
-Ten poradnik przedstawia, jak używać Apache Commons CSV do odczytu danych z pliku CSV i przetwarzania ich w Javie. Możesz łatwo dostosować ten przykład do swoich potrzeb, modyfikując klasę modelu (`Event`) oraz sposób przetwarzania danych w metodzie `readEventsFromCsv`.
-
-## Poradnik: Odczytywanie godziny w formacie HH:mm:ss z pliku CSV
-
-W tym poradniku pokażemy, jak odczytywać godziny w formacie `HH:mm:ss` z pliku CSV przy użyciu gotowego modułu odczytywania CSV.
+## Odczytywanie godziny w formacie HH:mm:ss z pliku CSV
 
 ### Krok 1: Struktura pliku CSV
 
