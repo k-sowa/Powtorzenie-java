@@ -1,4 +1,11 @@
 # Rozwiązania do powtórzeń oraz poradniki do kluczowych elementów które mogą się pojawić
+
+## Przydatne linki
+
+https://github.com/umcspro
+https://github.com/kdmitruk
+https://github.com/lukaszkurantdev
+
 ## Odczytywanie danych z pliku CSV za pomocą Apache Commons CSV
 
 ### Krok 1: Dodanie zależności
