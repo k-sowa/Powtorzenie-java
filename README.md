@@ -240,9 +240,6 @@ public class Main {
    - Klasa `Main` używa modułu do odczytywania danych i wyświetlania informacji o wydarzeniach i ich godzinach.
 
 ## Rozwiązanie kolokwium powtórzeniowego
-Oto szczegółowy poradnik krok po kroku do każdego zadania:
-
-### 0. Przegląd plików CSV
 
 ### 1. Utworzenie projektów i struktury paczek
 
