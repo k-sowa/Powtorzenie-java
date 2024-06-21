@@ -146,7 +146,6 @@ Event 3,09:45:00
 
 ### Krok 2: Klasa modelu danych
 
-Upewnij się, że masz klasę `Event`, która przechowuje nazwę wydarzenia i czas.
 
 ```java
 import java.time.LocalTime;
