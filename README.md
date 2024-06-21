@@ -573,3 +573,215 @@ public class EEGController {
 ```
 
 4. Uruchom aplikację Spring Boot i przetestuj endpoint `/eeg`, podając nazwę użytkownika i numer elektrody jako parametry URL.
+
+# Rysowanie Odcinków w JavaFX z Obsługą Sieci
+
+## Opis Projektu
+
+Ten projekt implementuje program w Java, który uruchamia serwer nasłuchujący na wybranym porcie oraz wyświetla okno do rysowania grafiki 2D przy użyciu JavaFX. Program pozwala na podłączenie wielu klientów, z których każdy może wysłać wiadomość dotyczącą koloru lub współrzędnych odcinka do narysowania.
+
+## Wymagania
+
+- Java Development Kit (JDK) zainstalowany na komputerze.
+- Dowolne IDE do programowania w Java (np. IntelliJ IDEA, Eclipse).
+- JavaFX SDK zainstalowany i skonfigurowany w IDE.
+
+## Krok 1: Utworzenie Projektu
+
+1. Utwórz nowy projekt Java w preferowanym IDE.
+2. Dodaj bibliotekę JavaFX do projektu. Możesz to zrobić, dodając JavaFX SDK do ścieżki budowania projektu.
+
+## Krok 2: Struktura Projektu
+
+Projekt będzie składał się z trzech głównych części:
+1. Serwera nasłuchującego na wybranym porcie.
+2. Klienta do testowania.
+3. Okna JavaFX do wyświetlania rysunków.
+
+## Krok 3: Implementacja Serwera
+
+**Server.java**
+
+```java
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class Server {
+    private static final int PORT = 12345;
+    private static ConcurrentHashMap<Socket, String> clientColors = new ConcurrentHashMap<>();
+
+    public static void main(String[] args) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Server is listening on port " + PORT);
+
+            while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("New client connected");
+
+                new ClientHandler(socket, clientColors).start();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+**ClientHandler.java**
+
+```java
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class ClientHandler extends Thread {
+    private Socket socket;
+    private ConcurrentHashMap<Socket, String> clientColors;
+
+    public ClientHandler(Socket socket, ConcurrentHashMap<Socket, String> clientColors) {
+        this.socket = socket;
+        this.clientColors = clientColors;
+    }
+
+    @Override
+    public void run() {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                if (inputLine.matches("^[0-9A-Fa-f]{6}$")) {
+                    clientColors.put(socket, "#" + inputLine);
+                } else if (inputLine.matches("^-?\\d+(\\.\\d+)?\\s-?\\d+(\\.\\d+)?\\s-?\\d+(\\.\\d+)?\\s-?\\d+(\\.\\d+)?$")) {
+                    String[] parts = inputLine.split("\\s+");
+                    double x1 = Double.parseDouble(parts[0]);
+                    double y1 = Double.parseDouble(parts[1]);
+                    double x2 = Double.parseDouble(parts[2]);
+                    double y2 = Double.parseDouble(parts[3]);
+                    String color = clientColors.getOrDefault(socket, "#000000");
+
+                    // Dodajemy odcinek do rysowania w GUI
+                    DrawingApp.addLine(x1, y1, x2, y2, color);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+## Krok 4: Implementacja GUI w JavaFX
+
+**DrawingApp.java**
+
+```java
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DrawingApp extends Application {
+    private static final int WIDTH = 500;
+    private static final int HEIGHT = 500;
+    private static List<Line> lines = new ArrayList<>();
+    private static Canvas canvas;
+    private static double offsetX = 0;
+    private static double offsetY = 0;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        canvas = new Canvas(WIDTH, HEIGHT);
+        Pane root = new Pane(canvas);
+        Scene scene = new Scene(root);
+
+        scene.setOnKeyPressed(this::handleKeyPress);
+
+        primaryStage.setTitle("Drawing App");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        draw();
+    }
+
+    private void handleKeyPress(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP:
+                offsetY += 10;
+                break;
+            case DOWN:
+                offsetY -= 10;
+                break;
+            case LEFT:
+                offsetX += 10;
+                break;
+            case RIGHT:
+                offsetX -= 10;
+                break;
+            default:
+                break;
+        }
+        draw();
+    }
+
+    public static void addLine(double x1, double y1, double x2, double y2, String color) {
+        lines.add(new Line(x1, y1, x2, y2, color));
+        draw();
+    }
+
+    private static void draw() {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, WIDTH, HEIGHT);
+
+        for (Line line : lines) {
+            gc.setStroke(Color.web(line.color));
+            gc.strokeLine(line.x1 - offsetX, line.y1 - offsetY, line.x2 - offsetX, line.y2 - offsetY);
+        }
+        gc.setFill(Color.BLACK);
+        gc.fillText("Offset X: " + offsetX + ", Offset Y: " + offsetY, 10, 10);
+    }
+
+    private static class Line {
+        double x1, y1, x2, y2;
+        String color;
+
+        Line(double x1, double y1, double x2, double y2, String color) {
+            this.x1 = x1;
+            this.y1 = y1;
+            this.x2 = x2;
+            this.y2 = y2;
+            this.color = color;
+        }
+    }
+}
+```
+
+## Krok 5: Uruchomienie Programu
+
+1. Uruchom `Server` jako aplikację Java.
+2. Uruchom `DrawingApp` jako aplikację JavaFX.
+3. Użyj dowolnego klienta TCP (np. telnet, netcat) do wysyłania wiadomości do serwera. Możesz użyć poniższych komend w terminalu, aby połączyć się z serwerem i wysyłać wiadomości:
+   - Ustaw kolor: `echo "FF0000" | nc localhost 12345`
+   - Wyślij współrzędne odcinka: `echo "100 100 200 200" | nc localhost 12345`
+
+## Krok 6: Testowanie
+
+1. Upewnij się, że okno aplikacji JavaFX otwiera się i jest wypełnione białym kolorem.
+2. Testuj różne kombinacje kolorów i odcinków, wysyłając odpowiednie wiadomości.
+3. Sprawdź, czy przyciski strzałek na klawiaturze przesuwają układ współrzędnych.
+
+Gratulacje! Stworzyłeś program do rysowania odcinków z obsługą sieci w JavaFX.
