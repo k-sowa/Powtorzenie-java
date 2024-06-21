@@ -2,10 +2,11 @@
 
 ## Przydatne linki
 
-https://github.com/umcspro
-https://github.com/kdmitruk
-https://github.com/lukaszkurantdev
-https://github.com/michaldziuba03/java
+#### https://github.com/umcspro
+#### https://github.com/kdmitruk
+#### https://github.com/lukaszkurantdev
+#### https://github.com/michaldziuba03/java
+#### https://mvnrepository.com/
 
 ## Odczytywanie danych z pliku CSV za pomocą Apache Commons CSV
 
