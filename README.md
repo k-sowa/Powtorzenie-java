@@ -1,26 +1,33 @@
-Odczytywanie danych z pliku CSV za pomocą Apache Commons CSV
-Krok 1: Dodanie zależności
-Jeśli używasz Maven, dodaj następującą zależność do pliku pom.xml:
+## Poradnik: Odczytywanie danych z pliku CSV za pomocą Apache Commons CSV
 
-```
+### Krok 1: Dodanie zależności
+
+Jeśli używasz Maven, dodaj następującą zależność do pliku `pom.xml`:
+
+```xml
 <dependency>
     <groupId>org.apache.commons</groupId>
     <artifactId>commons-csv</artifactId>
     <version>1.8</version>
 </dependency>
 ```
-Krok 2: Struktura pliku CS
 
-```
+### Krok 2: Struktura pliku CSV
+
+Upewnij się, że Twój plik CSV ma odpowiednią strukturę. Przykład pliku `events.csv`:
+
+```csv
 Name,Time
 Event 1,12:00:00
 Event 2,14:30:15
 Event 3,09:45:00
 ```
-Krok 3: Klasa modelu danych
-Stwórz klasę, która będzie reprezentować dane z pliku CSV. W tym przypadku stworzymy klasę Event.
 
-```
+### Krok 3: Klasa modelu danych
+
+Stwórz klasę, która będzie reprezentować dane z pliku CSV. W tym przypadku stworzymy klasę `Event`.
+
+```java
 import java.time.LocalTime;
 
 public class Event {
@@ -46,10 +53,12 @@ public class Event {
     }
 }
 ```
-Krok 4: Odczytywanie danych z pliku CSV
+
+### Krok 4: Odczytywanie danych z pliku CSV
+
 Stwórz klasę, która będzie odpowiedzialna za odczyt danych z pliku CSV i ich przetwarzanie.
 
-```
+```java
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -95,20 +104,25 @@ public class CsvReader {
     }
 }
 ```
-Wyjaśnienie kroków:
-Dodanie zależności do Apache Commons CSV:
 
-Dodaj odpowiednią zależność do swojego pliku pom.xml, jeśli używasz Maven.
-Stworzenie klasy Event:
+### Wyjaśnienie kroków:
 
-Klasa Event przechowuje nazwę wydarzenia oraz czas, w którym się odbywa.
-Odczyt danych z pliku CSV:
+1. **Dodanie zależności do Apache Commons CSV**:
+   - Dodaj odpowiednią zależność do swojego pliku `pom.xml`, jeśli używasz Maven.
 
-Użyj klasy CSVParser z biblioteki Apache Commons CSV do odczytu i parsowania pliku CSV.
-Użyj DateTimeFormatter do parsowania czasu w formacie HH:mm:ss.
-Wyświetlanie informacji:
-Metoda main odczytuje wydarzenia z pliku CSV i wyświetla je na konsoli.
+2. **Stworzenie klasy `Event`**:
+   - Klasa `Event` przechowuje nazwę wydarzenia oraz czas, w którym się odbywa.
 
+3. **Odczyt danych z pliku CSV**:
+   - Użyj klasy `CSVParser` z biblioteki Apache Commons CSV do odczytu i parsowania pliku CSV.
+   - Użyj `DateTimeFormatter` do parsowania czasu w formacie `HH:mm:ss`.
+
+4. **Wyświetlanie informacji**:
+   - Metoda `main` odczytuje wydarzenia z pliku CSV i wyświetla je na konsoli.
+
+### Podsumowanie
+
+Ten poradnik przedstawia, jak używać Apache Commons CSV do odczytu danych z pliku CSV i przetwarzania ich w Javie. Możesz łatwo dostosować ten przykład do swoich potrzeb, modyfikując klasę modelu (`Event`) oraz sposób przetwarzania danych w metodzie `readEventsFromCsv`.
 
 ## Poradnik: Odczytywanie godziny w formacie HH:mm:ss z pliku CSV
 
