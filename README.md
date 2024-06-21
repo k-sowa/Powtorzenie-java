@@ -519,9 +519,7 @@ public class ClientTest {
 </dependencies>
 ```
 
-3. Utwórz kontrol
-
-er `EEGController`.
+3. Utwórz kontroler `EEGController`.
 
 **EEGController.java**
 ```java
