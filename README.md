@@ -239,13 +239,10 @@ public class Main {
 4. **Użycie modułu**:
    - Klasa `Main` używa modułu do odczytywania danych i wyświetlania informacji o wydarzeniach i ich godzinach.
 
-### Rozwiązanie kolokwium powtórzeniowego
+## Rozwiązanie kolokwium powtórzeniowego
 Oto szczegółowy poradnik krok po kroku do każdego zadania:
 
 ### 0. Przegląd plików CSV
-
-1. Rozpakuj załączone pliki `eegpliki.zip` do preferowanej lokalizacji.
-2. Otwórz pliki `tm00.csv` i `tm01.csv` w edytorze tekstowym lub arkuszu kalkulacyjnym, aby zapoznać się z ich zawartością.
 
 ### 1. Utworzenie projektów i struktury paczek
 
