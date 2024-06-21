@@ -115,22 +115,6 @@ public class CsvReader {
 }
 ```
 
-### Wyjaśnienie kroków:
-
-1. **Dodanie zależności do Apache Commons CSV**:
-   - Dodaj odpowiednią zależność do swojego pliku `pom.xml`, jeśli używasz Maven.
-
-2. **Stworzenie klasy `Event`**:
-   - Klasa `Event` przechowuje nazwę wydarzenia oraz czas, w którym się odbywa.
-
-3. **Odczyt danych z pliku CSV**:
-   - Użyj klasy `CSVParser` z biblioteki Apache Commons CSV do odczytu i parsowania pliku CSV.
-   - Użyj `DateTimeFormatter` do parsowania czasu w formacie `HH:mm:ss`.
-
-4. **Wyświetlanie informacji**:
-   - Metoda `main` odczytuje wydarzenia z pliku CSV i wyświetla je na konsoli.
-
-
 ## Odczytywanie godziny w formacie HH:mm:ss z pliku CSV
 
 ### Krok 1: Struktura pliku CSV
@@ -234,19 +218,6 @@ public class Main {
 }
 ```
 
-### Podsumowanie
-
-1. **Struktura pliku CSV**:
-   - Plik CSV powinien mieć kolumny `Name` i `Time` z danymi w formacie `HH:mm:ss`.
-
-2. **Klasa modelu danych (`Event`)**:
-   - Klasa do przechowywania nazwy wydarzenia i czasu.
-
-3. **Moduł do odczytywania danych z pliku CSV (`CsvReader`)**:
-   - Klasa do odczytywania i parsowania danych z pliku CSV.
-
-4. **Użycie modułu**:
-   - Klasa `Main` używa modułu do odczytywania danych i wyświetlania informacji o wydarzeniach i ich godzinach.
 
 ## Rozwiązanie kolokwium powtórzeniowego
 ### Polecenie Napisz program wyświetlający okno, w którym, na podstawie danych przesyłanych sieciowo, rysowane są odcinki. Program powinien stanowić pojedynczy projekt i charakteryzować się następującymi cechami:
