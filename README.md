@@ -574,29 +574,12 @@ public class EEGController {
 
 4. Uruchom aplikację Spring Boot i przetestuj endpoint `/eeg`, podając nazwę użytkownika i numer elektrody jako parametry URL.
 
-# Rysowanie Odcinków w JavaFX z Obsługą Sieci
+# Kolokwium 2021 Rysowanie Odcinków w JavaFX z Obsługą Sieci
 
 ## Opis Projektu
 
 Ten projekt implementuje program w Java, który uruchamia serwer nasłuchujący na wybranym porcie oraz wyświetla okno do rysowania grafiki 2D przy użyciu JavaFX. Program pozwala na podłączenie wielu klientów, z których każdy może wysłać wiadomość dotyczącą koloru lub współrzędnych odcinka do narysowania.
 
-## Wymagania
-
-- Java Development Kit (JDK) zainstalowany na komputerze.
-- Dowolne IDE do programowania w Java (np. IntelliJ IDEA, Eclipse).
-- JavaFX SDK zainstalowany i skonfigurowany w IDE.
-
-## Krok 1: Utworzenie Projektu
-
-1. Utwórz nowy projekt Java w preferowanym IDE.
-2. Dodaj bibliotekę JavaFX do projektu. Możesz to zrobić, dodając JavaFX SDK do ścieżki budowania projektu.
-
-## Krok 2: Struktura Projektu
-
-Projekt będzie składał się z trzech głównych części:
-1. Serwera nasłuchującego na wybranym porcie.
-2. Klienta do testowania.
-3. Okna JavaFX do wyświetlania rysunków.
 
 ## Krok 3: Implementacja Serwera
 
@@ -777,11 +760,3 @@ public class DrawingApp extends Application {
 3. Użyj dowolnego klienta TCP (np. telnet, netcat) do wysyłania wiadomości do serwera. Możesz użyć poniższych komend w terminalu, aby połączyć się z serwerem i wysyłać wiadomości:
    - Ustaw kolor: `echo "FF0000" | nc localhost 12345`
    - Wyślij współrzędne odcinka: `echo "100 100 200 200" | nc localhost 12345`
-
-## Krok 6: Testowanie
-
-1. Upewnij się, że okno aplikacji JavaFX otwiera się i jest wypełnione białym kolorem.
-2. Testuj różne kombinacje kolorów i odcinków, wysyłając odpowiednie wiadomości.
-3. Sprawdź, czy przyciski strzałek na klawiaturze przesuwają układ współrzędnych.
-
-Gratulacje! Stworzyłeś program do rysowania odcinków z obsługą sieci w JavaFX.
